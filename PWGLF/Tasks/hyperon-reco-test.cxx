@@ -42,37 +42,36 @@ using namespace o2::framework::expressions;
 struct myLambda {
   HistogramRegistry registry{
     "registry",
-    { { "hReduction", "", { HistType::kTH1F, { { 2, 0, 2 } } } },
-      { "hReduction_mc", "", { HistType::kTH1F, { { 2, 0, 2 } } } },
-      { "hmyLambda_before",
-        "",
-        { HistType::kTH2F, { { 250, 1.0, 1.25, "Lambda_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmcLambda_before",
-        "",
-        { HistType::kTH2F, { { 250, 1.0, 1.25, "Lambda_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmyLambda_after",
-        "",
-        { HistType::kTH2F, { { 250, 1.0, 1.25, "Lambda_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmcLambda_after",
-        "",
-        { HistType::kTH2F, { { 250, 1.0, 1.25, "Lambda_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmyLambda_after_b", "", { HistType::kTH1F, { { 250, 1.0, 1.25 } } } },
-      { "hmcLambda_after_b", "", { HistType::kTH1F, { { 250, 1.0, 1.25 } } } } }
-  };
+    {{"hReduction", "", {HistType::kTH1F, {{2, 0, 2}}}},
+     {"hReduction_mc", "", {HistType::kTH1F, {{2, 0, 2}}}},
+     {"hmyLambda_before",
+      "",
+      {HistType::kTH2F, {{250, 1.0, 1.25, "Lambda_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmcLambda_before",
+      "",
+      {HistType::kTH2F, {{250, 1.0, 1.25, "Lambda_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmyLambda_after",
+      "",
+      {HistType::kTH2F, {{250, 1.0, 1.25, "Lambda_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmcLambda_after",
+      "",
+      {HistType::kTH2F, {{250, 1.0, 1.25, "Lambda_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmyLambda_after_b", "", {HistType::kTH1F, {{250, 1.0, 1.25}}}},
+     {"hmcLambda_after_b", "", {HistType::kTH1F, {{250, 1.0, 1.25}}}}}};
 
   // track cuts
-  Configurable<float> rapidity{ "rapidity", 0.80, "V0 rapidity" };
-  Configurable<float> tpcNcl{ "tpcNcl", 70, "tpcNcl" };
-  Configurable<float> dcanegtopv{ "dcanegtopv", 0.05, "DCA Neg To PV" };
-  Configurable<float> dcapostopv{ "dcapostopv", 0.05, "DCA Pos To PV" };
-  Configurable<float> tpcsigma{ "tpcsigma", 5, "tpcsigma" };
+  Configurable<float> rapidity{"rapidity", 0.80, "V0 rapidity"};
+  Configurable<float> tpcNcl{"tpcNcl", 70, "tpcNcl"};
+  Configurable<float> dcanegtopv{"dcanegtopv", 0.05, "DCA Neg To PV"};
+  Configurable<float> dcapostopv{"dcapostopv", 0.05, "DCA Pos To PV"};
+  Configurable<float> tpcsigma{"tpcsigma", 5, "tpcsigma"};
 
   // V0 cuts
-  Configurable<float> minpt{ "minpt", 0.30, "minpt" };
-  Configurable<float> v0radius{ "v0radius", 0.2, "v0radius" };
-  Configurable<float> dcav0dau{ "dcav0dau", 1.5, "DCA Pos To PV" };
-  Configurable<float> v0cospa{ "v0cospa", 0.99, "V0 CosPA" };
-  Configurable<float> removeKs{ "removeKs", 0.025, "removeKs" };
+  Configurable<float> minpt{"minpt", 0.30, "minpt"};
+  Configurable<float> v0radius{"v0radius", 0.2, "v0radius"};
+  Configurable<float> dcav0dau{"dcav0dau", 1.5, "DCA Pos To PV"};
+  Configurable<float> v0cospa{"v0cospa", 0.99, "V0 CosPA"};
+  Configurable<float> removeKs{"removeKs", 0.025, "removeKs"};
 
   Filter filtertrack = nabs(aod::v0data::dcapostopv) > dcapostopv&& nabs(aod::v0data::dcanegtopv) > dcanegtopv&& aod::v0data::dcaV0daughters < dcav0dau;
 
@@ -123,40 +122,39 @@ struct myLambda {
 struct myXi {
   HistogramRegistry registry{
     "registry",
-    { { "hReduction", "", { HistType::kTH1F, { { 2, 0, 2 } } } },
-      { "hReduction_mc", "", { HistType::kTH1F, { { 2, 0, 2 } } } },
-      { "hmyXi_before",
-        "",
-        { HistType::kTH2F, { { 500, 1.2, 1.7, "Xi_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmcXi_before",
-        "",
-        { HistType::kTH2F, { { 500, 1.2, 1.7, "Xi_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmyLambda", "", { HistType::kTH1F, { { 250, 1.0, 1.25 } } } },
-      { "hmyXi_after", "", { HistType::kTH2F, { { 500, 1.2, 1.7, "Xi_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmcXi_after", "", { HistType::kTH2F, { { 500, 1.2, 1.7, "Xi_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmyXi_after_b", "", { HistType::kTH1F, { { 500, 1.2, 1.7 } } } },
-      { "hmcXi_after_b", "", { HistType::kTH1F, { { 500, 1.2, 1.7 } } } } }
-  };
+    {{"hReduction", "", {HistType::kTH1F, {{2, 0, 2}}}},
+     {"hReduction_mc", "", {HistType::kTH1F, {{2, 0, 2}}}},
+     {"hmyXi_before",
+      "",
+      {HistType::kTH2F, {{500, 1.2, 1.7, "Xi_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmcXi_before",
+      "",
+      {HistType::kTH2F, {{500, 1.2, 1.7, "Xi_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmyLambda", "", {HistType::kTH1F, {{250, 1.0, 1.25}}}},
+     {"hmyXi_after", "", {HistType::kTH2F, {{500, 1.2, 1.7, "Xi_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmcXi_after", "", {HistType::kTH2F, {{500, 1.2, 1.7, "Xi_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmyXi_after_b", "", {HistType::kTH1F, {{500, 1.2, 1.7}}}},
+     {"hmcXi_after_b", "", {HistType::kTH1F, {{500, 1.2, 1.7}}}}}};
 
   // Dau & bach track cuts
-  Configurable<float> rapidity{ "rapidity", 0.80, "V0 rapidity" };
-  Configurable<float> mincrossedrow{ "mincrossedrow", 70, "mincrossedrow" };
-  Configurable<float> minpt{ "minpt", 0.30, "minpt" };
-  Configurable<float> dcatopv{ "dcatopv", 0.05, "DCA To PV" };
-  Configurable<float> tpcsigma{ "tpcsigma", 4.0, "tpcsigma" };
+  Configurable<float> rapidity{"rapidity", 0.80, "V0 rapidity"};
+  Configurable<float> mincrossedrow{"mincrossedrow", 70, "mincrossedrow"};
+  Configurable<float> minpt{"minpt", 0.30, "minpt"};
+  Configurable<float> dcatopv{"dcatopv", 0.05, "DCA To PV"};
+  Configurable<float> tpcsigma{"tpcsigma", 4.0, "tpcsigma"};
 
   // V0 cuts
-  Configurable<float> v0radius{ "v0radius", 1.4, "v0radius" };
-  Configurable<float> dcav0dau{ "dcav0dau", 1.6, "DCA Pos To PV" };
-  Configurable<float> dcav0topv{ "dcav0topv", 0.07, "dcav0topv" };
-  Configurable<float> v0cospa{ "v0cospa", 0.97, "v0CPA" };
-  Configurable<float> v0masswindow{ "v0masswindow", 0.006, "v0masswindow" };
+  Configurable<float> v0radius{"v0radius", 1.4, "v0radius"};
+  Configurable<float> dcav0dau{"dcav0dau", 1.6, "DCA Pos To PV"};
+  Configurable<float> dcav0topv{"dcav0topv", 0.07, "dcav0topv"};
+  Configurable<float> v0cospa{"v0cospa", 0.97, "v0CPA"};
+  Configurable<float> v0masswindow{"v0masswindow", 0.006, "v0masswindow"};
 
   // casc cuts
-  Configurable<float> cascradius{ "cascradius", 0.8, "cascradius" };
-  Configurable<float> dcacascdau{ "dcascascdau", 1.6, "DCA V0 to bach" };
-  Configurable<float> casccospa{ "casccospa", 0.98, "casc CosPA" };
-  Configurable<float> removeOmega{ "removeXi", 0.005, "removeXi" };
+  Configurable<float> cascradius{"cascradius", 0.8, "cascradius"};
+  Configurable<float> dcacascdau{"dcascascdau", 1.6, "DCA V0 to bach"};
+  Configurable<float> casccospa{"casccospa", 0.98, "casc CosPA"};
+  Configurable<float> removeOmega{"removeXi", 0.005, "removeXi"};
 
   using DauTracks = soa::Join<aod::Tracks, aod::TracksExtra, aod::pidTPCPi, aod::pidTPCPr>;
 
@@ -217,44 +215,43 @@ struct myXi {
 struct myOmega {
   HistogramRegistry registry{
     "registry",
-    { { "hReduction", "", { HistType::kTH1F, { { 2, 0, 2 } } } },
-      { "hReduction_mc", "", { HistType::kTH1F, { { 2, 0, 2 } } } },
-      { "hmyOmega_before",
-        "",
-        { HistType::kTH2F, { { 500, 1.5, 2.0, "Omega_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmcOmega_before",
-        "",
-        { HistType::kTH2F, { { 500, 1.5, 2.0, "Omega_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmyLambda", "", { HistType::kTH1F, { { 250, 1.0, 1.25 } } } },
-      { "hmyOmega_after",
-        "",
-        { HistType::kTH2F, { { 500, 1.5, 2.0, "Omega_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmcOmega_after",
-        "",
-        { HistType::kTH2F, { { 500, 1.5, 2.0, "Omega_mass" }, { 10000, 0, 10, "pt" } } } },
-      { "hmyOmega_after_b", "", { HistType::kTH1F, { { 500, 1.5, 2.0 } } } },
-      { "hmcOmega_after_b", "", { HistType::kTH1F, { { 500, 1.5, 2.0 } } } } }
-  };
+    {{"hReduction", "", {HistType::kTH1F, {{2, 0, 2}}}},
+     {"hReduction_mc", "", {HistType::kTH1F, {{2, 0, 2}}}},
+     {"hmyOmega_before",
+      "",
+      {HistType::kTH2F, {{500, 1.5, 2.0, "Omega_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmcOmega_before",
+      "",
+      {HistType::kTH2F, {{500, 1.5, 2.0, "Omega_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmyLambda", "", {HistType::kTH1F, {{250, 1.0, 1.25}}}},
+     {"hmyOmega_after",
+      "",
+      {HistType::kTH2F, {{500, 1.5, 2.0, "Omega_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmcOmega_after",
+      "",
+      {HistType::kTH2F, {{500, 1.5, 2.0, "Omega_mass"}, {10000, 0, 10, "pt"}}}},
+     {"hmyOmega_after_b", "", {HistType::kTH1F, {{500, 1.5, 2.0}}}},
+     {"hmcOmega_after_b", "", {HistType::kTH1F, {{500, 1.5, 2.0}}}}}};
 
   // Dau & bach track cuts
-  Configurable<float> rapidity{ "rapidity", 0.80, "V0 rapidity" };
-  Configurable<float> mincrossedrow{ "mincrossedrow", 70, "mincrossedrow" };
-  Configurable<float> minpt{ "minpt", 0.30, "minpt" };
-  Configurable<float> dcatopv{ "dcatopv", 0.05, "DCA To PV" };
-  Configurable<float> tpcsigma{ "tpcsigma", 4.0, "tpcsigma" };
+  Configurable<float> rapidity{"rapidity", 0.80, "V0 rapidity"};
+  Configurable<float> mincrossedrow{"mincrossedrow", 70, "mincrossedrow"};
+  Configurable<float> minpt{"minpt", 0.30, "minpt"};
+  Configurable<float> dcatopv{"dcatopv", 0.05, "DCA To PV"};
+  Configurable<float> tpcsigma{"tpcsigma", 4.0, "tpcsigma"};
 
   // V0 cuts
-  Configurable<float> v0radius{ "v0radius", 1.0, "v0radius" };
-  Configurable<float> dcav0dau{ "dcav0dau", 1.2, "DCA Pos To PV" };
-  Configurable<float> dcav0topv{ "dcav0topv", 0.06, "dcav0topv" };
-  Configurable<float> v0cospa{ "v0cospa", 0.97, "v0CPA" };
-  Configurable<float> v0masswindow{ "v0masswindow", 0.006, "v0masswindow" };
+  Configurable<float> v0radius{"v0radius", 1.0, "v0radius"};
+  Configurable<float> dcav0dau{"dcav0dau", 1.2, "DCA Pos To PV"};
+  Configurable<float> dcav0topv{"dcav0topv", 0.06, "dcav0topv"};
+  Configurable<float> v0cospa{"v0cospa", 0.97, "v0CPA"};
+  Configurable<float> v0masswindow{"v0masswindow", 0.006, "v0masswindow"};
 
   // casc cuts
-  Configurable<float> cascradius{ "cascradius", 0.2, "cascradius" };
-  Configurable<float> dcacascdau{ "dcascascdau", 0.8, "DCA V0 to bach" };
-  Configurable<float> casccospa{ "casccospa", 0.995, "casc CosPA" };
-  Configurable<float> removeXi{ "removeXi", 0.005, "removeXi" };
+  Configurable<float> cascradius{"cascradius", 0.2, "cascradius"};
+  Configurable<float> dcacascdau{"dcascascdau", 0.8, "DCA V0 to bach"};
+  Configurable<float> casccospa{"casccospa", 0.995, "casc CosPA"};
+  Configurable<float> removeXi{"removeXi", 0.005, "removeXi"};
 
   using DauTracks =
     soa::Join<aod::Tracks, aod::TracksExtra, aod::pidTPCPi, aod::pidTPCPr, aod::pidTPCKa>;
@@ -315,7 +312,7 @@ struct myOmega {
 
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
 {
-  return WorkflowSpec{ adaptAnalysisTask<myLambda>(cfgc),
-                       adaptAnalysisTask<myXi>(cfgc),
-                       adaptAnalysisTask<myOmega>(cfgc) };
+  return WorkflowSpec{adaptAnalysisTask<myLambda>(cfgc),
+                      adaptAnalysisTask<myXi>(cfgc),
+                      adaptAnalysisTask<myOmega>(cfgc)};
 }
