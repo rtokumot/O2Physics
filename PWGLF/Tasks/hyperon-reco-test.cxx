@@ -11,37 +11,37 @@
 // or submit itself to any jurisdiction.
 //
 
-#include \
+#include
   "Common/DataModel/EventSelection.h"
-#include \
+#include
   "Common/DataModel/PIDResponse.h"
-#include \
+#include
   "Common/DataModel/TrackSelectionTables.h"
-#include \
+#include
   "Framework/AnalysisDataModel.h"
-#include \
+#include
   "Framework/AnalysisTask.h"
-#include \
+#include
   "Framework/HistogramRegistry.h"
-#include \
+#include
   "Framework/runDataProcessing.h"
-#include \
+#include
   "ReconstructionDataFormats/Track.h"
 
-#include \
+#include
   "Common/Core/RecoDecay.h"
-#include \
+#include
   "Common/Core/TrackSelection.h"
-#include \
+#include
   "Common/Core/trackUtilities.h"
-#include \
+#include
   "Common/DataModel/Centrality.h"
-#include \
+#include
   "Framework/ASoAHelpers.h"
-#include \
+#include
   "PWGLF/DataModel/LFStrangenessTables.h"
 
-#include \
+#include
   "TMath.h"
 
 #include <TDatabasePDG.h>
@@ -55,14 +55,15 @@ using namespace o2;
 using namespace o2::framework;
 using namespace o2::framework::expressions;
 
-struct myLambda
-{
+struct myLambda {
   HistogramRegistry registry{
     "registry",
     {{"hReduction",
-      "", {HistType::kTH1F, {{2, 0, 2}}}},
+      "",
+      {HistType::kTH1F, {{2, 0, 2}}}},
      {"hReduction_mc",
-      "", {HistType::kTH1F, {{2, 0, 2}}}},
+      "",
+      {HistType::kTH1F, {{2, 0, 2}}}},
      {"hmyLambda_before",
       "",
       {HistType::kTH2F,
@@ -92,9 +93,11 @@ struct myLambda
         {10000, 0, 10,
          "pt"}}}},
      {"hmyLambda_after_b",
-      "", {HistType::kTH1F, {{250, 1.0, 1.25}}}},
+      "",
+      {HistType::kTH1F, {{250, 1.0, 1.25}}}},
      {"hmcLambda_after_b",
-      "", {HistType::kTH1F, {{250, 1.0, 1.25}}}}}};
+      "",
+      {HistType::kTH1F, {{250, 1.0, 1.25}}}}}};
 
   // track cuts
   Configurable<float> rapidity{
@@ -130,16 +133,15 @@ struct myLambda
     "removeKs", 0.025,
     "removeKs"};
 
-  Filter filtertrack = nabs(aod::v0data::dcapostopv) > dcapostopv &&
-                       nabs(aod::v0data::dcanegtopv) > dcanegtopv &&
-                       aod::v0data::dcaV0daughters < dcav0dau;
+  Filter filtertrack = nabs(aod::v0data::dcapostopv) > dcapostopv&&
+                                                         nabs(aod::v0data::dcanegtopv) > dcanegtopv&& aod::v0data::dcaV0daughters < dcav0dau;
 
   using DauTracks =
     soa::Join<aod::Tracks, aod::TracksExtra, aod::pidTPCPi, aod::pidTPCPr>;
 
   void
     process(soa::Join<aod::Collisions, aod::EvSels>::iterator const& collision,
-            soa::Filtered<soa::Join<aod::V0Datas, aod::McV0Labels> > const& V0s,
+            soa::Filtered<soa::Join<aod::V0Datas, aod::McV0Labels>> const& V0s,
             DauTracks const& tracks, aod::McParticles const& mcParticles)
   {
     for (auto& v0 : V0s) {
@@ -165,20 +167,20 @@ struct myLambda
       auto posdau = v0.posTrack_as<DauTracks>();
       auto negdau = v0.negTrack_as<DauTracks>();
 
-      if (  // track cuts
-            TMath::Abs(posdau.eta()) < rapidity &&
-            TMath::Abs(negdau.eta()) < rapidity &&
-            posdau.tpcNClsCrossedRows() > tpcNcl &&
-            negdau.tpcNClsCrossedRows() > tpcNcl &&
-            TMath::Abs(posdau.tpcNSigmaPr()) < tpcsigma &&
-            TMath::Abs(negdau.tpcNSigmaPi()) < tpcsigma &&
+      if ( // track cuts
+        TMath::Abs(posdau.eta()) < rapidity &&
+        TMath::Abs(negdau.eta()) < rapidity &&
+        posdau.tpcNClsCrossedRows() > tpcNcl &&
+        negdau.tpcNClsCrossedRows() > tpcNcl &&
+        TMath::Abs(posdau.tpcNSigmaPr()) < tpcsigma &&
+        TMath::Abs(negdau.tpcNSigmaPi()) < tpcsigma &&
 
-            // V0 cuts
-            v0.pt() > minpt && v0.v0radius() > v0radius &&
-            v0.v0cosPA(collision.posX(), collision.posY(), collision.posZ()) >
-              v0cospa &&
-            TMath::Abs(v0.mK0Short() - RecoDecay::getMassPDG(kK0Short)) >
-              removeKs) {
+        // V0 cuts
+        v0.pt() > minpt && v0.v0radius() > v0radius &&
+        v0.v0cosPA(collision.posX(), collision.posY(), collision.posZ()) >
+          v0cospa &&
+        TMath::Abs(v0.mK0Short() - RecoDecay::getMassPDG(kK0Short)) >
+          removeKs) {
         registry.fill(HIST(
                         "hReduction"),
                       1.5);
@@ -208,40 +210,36 @@ struct myLambda
   }
 };
 
-struct myXi
-{
+struct myXi {
   HistogramRegistry registry{
     "registry",
     {{"hReduction",
-      "", {HistType::kTH1F, {{2, 0, 2}}}},
+      "",
+      {HistType::kTH1F, {{2, 0, 2}}}},
      {"hReduction_mc",
-      "", {HistType::kTH1F, {{2, 0, 2}}}},
+      "",
+      {HistType::kTH1F, {{2, 0, 2}}}},
      {"hmyXi_before",
-      "", {HistType::kTH2F, {{500, 1.2, 1.7,
-                              "Xi_mass"},
-                             {10000, 0, 10,
-                              "pt"}}}},
+      "",
+      {HistType::kTH2F, {{500, 1.2, 1.7, "Xi_mass"}, {10000, 0, 10, "pt"}}}},
      {"hmcXi_before",
-      "", {HistType::kTH2F, {{500, 1.2, 1.7,
-                              "Xi_mass"},
-                             {10000, 0, 10,
-                              "pt"}}}},
+      "",
+      {HistType::kTH2F, {{500, 1.2, 1.7, "Xi_mass"}, {10000, 0, 10, "pt"}}}},
      {"hmyLambda",
-      "", {HistType::kTH1F, {{250, 1.0, 1.25}}}},
+      "",
+      {HistType::kTH1F, {{250, 1.0, 1.25}}}},
      {"hmyXi_after",
-      "", {HistType::kTH2F, {{500, 1.2, 1.7,
-                              "Xi_mass"},
-                             {10000, 0, 10,
-                              "pt"}}}},
+      "",
+      {HistType::kTH2F, {{500, 1.2, 1.7, "Xi_mass"}, {10000, 0, 10, "pt"}}}},
      {"hmcXi_after",
-      "", {HistType::kTH2F, {{500, 1.2, 1.7,
-                              "Xi_mass"},
-                             {10000, 0, 10,
-                              "pt"}}}},
+      "",
+      {HistType::kTH2F, {{500, 1.2, 1.7, "Xi_mass"}, {10000, 0, 10, "pt"}}}},
      {"hmyXi_after_b",
-      "", {HistType::kTH1F, {{500, 1.2, 1.7}}}},
+      "",
+      {HistType::kTH1F, {{500, 1.2, 1.7}}}},
      {"hmcXi_after_b",
-      "", {HistType::kTH1F, {{500, 1.2, 1.7}}}}}};
+      "",
+      {HistType::kTH1F, {{500, 1.2, 1.7}}}}}};
 
   // Dau & bach track cuts
   Configurable<float> rapidity{
@@ -325,29 +323,29 @@ struct myXi
       auto negdau = v0.negTrack_as<DauTracks>();
       auto bachelor = casc.bachelor_as<DauTracks>();
 
-      if (  // Dau & bach track cuts
-            TMath::Abs(posdau.eta()) < rapidity &&
-            TMath::Abs(negdau.eta()) < rapidity &&
-            TMath::Abs(bachelor.eta()) < rapidity &&
-            posdau.tpcNClsCrossedRows() > mincrossedrow &&
-            negdau.tpcNClsCrossedRows() > mincrossedrow &&
-            bachelor.tpcNClsCrossedRows() > mincrossedrow &&
-            posdau.pt() > minpt && negdau.pt() > minpt &&
-            bachelor.pt() > minpt &&
-            TMath::Abs(casc.dcapostopv()) > dcatopv &&
-            TMath::Abs(casc.dcanegtopv()) > dcatopv &&
-            TMath::Abs(casc.dcabachtopv()) > dcatopv &&
-            TMath::Abs(posdau.tpcNSigmaPr()) < tpcsigma &&
-            TMath::Abs(negdau.tpcNSigmaPi()) < tpcsigma &&
-            TMath::Abs(bachelor.tpcNSigmaPi()) < tpcsigma &&
-            bachelor.sign() < 0 &&
+      if ( // Dau & bach track cuts
+        TMath::Abs(posdau.eta()) < rapidity &&
+        TMath::Abs(negdau.eta()) < rapidity &&
+        TMath::Abs(bachelor.eta()) < rapidity &&
+        posdau.tpcNClsCrossedRows() > mincrossedrow &&
+        negdau.tpcNClsCrossedRows() > mincrossedrow &&
+        bachelor.tpcNClsCrossedRows() > mincrossedrow &&
+        posdau.pt() > minpt && negdau.pt() > minpt &&
+        bachelor.pt() > minpt &&
+        TMath::Abs(casc.dcapostopv()) > dcatopv &&
+        TMath::Abs(casc.dcanegtopv()) > dcatopv &&
+        TMath::Abs(casc.dcabachtopv()) > dcatopv &&
+        TMath::Abs(posdau.tpcNSigmaPr()) < tpcsigma &&
+        TMath::Abs(negdau.tpcNSigmaPi()) < tpcsigma &&
+        TMath::Abs(bachelor.tpcNSigmaPi()) < tpcsigma &&
+        bachelor.sign() < 0 &&
 
-            // V0 cuts
-            casc.v0radius() > v0radius && casc.dcaV0daughters() < dcav0dau &&
-            v0.dcav0topv(collision.posX(), collision.posY(),
-                         collision.posZ()) > dcav0topv &&
-            casc.v0cosPA(collision.posX(), collision.posY(),
-                         collision.posZ()) > v0cospa) {
+        // V0 cuts
+        casc.v0radius() > v0radius && casc.dcaV0daughters() < dcav0dau &&
+        v0.dcav0topv(collision.posX(), collision.posY(),
+                     collision.posZ()) > dcav0topv &&
+        casc.v0cosPA(collision.posX(), collision.posY(),
+                     collision.posZ()) > v0cospa) {
         registry.fill(HIST(
                         "hmyLambda"),
                       v0.mLambda());
@@ -393,14 +391,15 @@ struct myXi
   }
 };
 
-struct myOmega
-{
+struct myOmega {
   HistogramRegistry registry{
     "registry",
     {{"hReduction",
-      "", {HistType::kTH1F, {{2, 0, 2}}}},
+      "",
+      {HistType::kTH1F, {{2, 0, 2}}}},
      {"hReduction_mc",
-      "", {HistType::kTH1F, {{2, 0, 2}}}},
+      "",
+      {HistType::kTH1F, {{2, 0, 2}}}},
      {"hmyOmega_before",
       "",
       {HistType::kTH2F,
@@ -416,7 +415,8 @@ struct myOmega
         {10000, 0, 10,
          "pt"}}}},
      {"hmyLambda",
-      "", {HistType::kTH1F, {{250, 1.0, 1.25}}}},
+      "",
+      {HistType::kTH1F, {{250, 1.0, 1.25}}}},
      {"hmyOmega_after",
       "",
       {HistType::kTH2F,
@@ -432,9 +432,11 @@ struct myOmega
         {10000, 0, 10,
          "pt"}}}},
      {"hmyOmega_after_b",
-      "", {HistType::kTH1F, {{500, 1.5, 2.0}}}},
+      "",
+      {HistType::kTH1F, {{500, 1.5, 2.0}}}},
      {"hmcOmega_after_b",
-      "", {HistType::kTH1F, {{500, 1.5, 2.0}}}}}};
+      "",
+      {HistType::kTH1F, {{500, 1.5, 2.0}}}}}};
 
   // Dau & bach track cuts
   Configurable<float> rapidity{
@@ -518,29 +520,29 @@ struct myOmega
       auto negdau = v0.negTrack_as<DauTracks>();
       auto bachelor = casc.bachelor_as<DauTracks>();
 
-      if (  // Dau & bach track cuts
-            TMath::Abs(posdau.eta()) < rapidity &&
-            TMath::Abs(negdau.eta()) < rapidity &&
-            TMath::Abs(bachelor.eta()) < rapidity &&
-            posdau.tpcNClsCrossedRows() > mincrossedrow &&
-            negdau.tpcNClsCrossedRows() > mincrossedrow &&
-            bachelor.tpcNClsCrossedRows() > mincrossedrow &&
-            posdau.pt() > minpt && negdau.pt() > minpt &&
-            bachelor.pt() > minpt &&
-            TMath::Abs(casc.dcapostopv()) > dcatopv &&
-            TMath::Abs(casc.dcanegtopv()) > dcatopv &&
-            TMath::Abs(casc.dcabachtopv()) > dcatopv &&
-            TMath::Abs(posdau.tpcNSigmaPr()) < tpcsigma &&
-            TMath::Abs(negdau.tpcNSigmaPi()) < tpcsigma &&
-            TMath::Abs(bachelor.tpcNSigmaKa()) < tpcsigma &&
-            bachelor.sign() < 0 &&
+      if ( // Dau & bach track cuts
+        TMath::Abs(posdau.eta()) < rapidity &&
+        TMath::Abs(negdau.eta()) < rapidity &&
+        TMath::Abs(bachelor.eta()) < rapidity &&
+        posdau.tpcNClsCrossedRows() > mincrossedrow &&
+        negdau.tpcNClsCrossedRows() > mincrossedrow &&
+        bachelor.tpcNClsCrossedRows() > mincrossedrow &&
+        posdau.pt() > minpt && negdau.pt() > minpt &&
+        bachelor.pt() > minpt &&
+        TMath::Abs(casc.dcapostopv()) > dcatopv &&
+        TMath::Abs(casc.dcanegtopv()) > dcatopv &&
+        TMath::Abs(casc.dcabachtopv()) > dcatopv &&
+        TMath::Abs(posdau.tpcNSigmaPr()) < tpcsigma &&
+        TMath::Abs(negdau.tpcNSigmaPi()) < tpcsigma &&
+        TMath::Abs(bachelor.tpcNSigmaKa()) < tpcsigma &&
+        bachelor.sign() < 0 &&
 
-            // V0 cuts
-            casc.v0radius() > v0radius && casc.dcaV0daughters() < dcav0dau &&
-            v0.dcav0topv(collision.posX(), collision.posY(),
-                         collision.posZ()) > dcav0topv &&
-            casc.v0cosPA(collision.posX(), collision.posY(),
-                         collision.posZ()) > v0cospa) {
+        // V0 cuts
+        casc.v0radius() > v0radius && casc.dcaV0daughters() < dcav0dau &&
+        v0.dcav0topv(collision.posX(), collision.posY(),
+                     collision.posZ()) > dcav0topv &&
+        casc.v0cosPA(collision.posX(), collision.posY(),
+                     collision.posZ()) > v0cospa) {
         registry.fill(HIST(
                         "hmyLambda"),
                       v0.mLambda());
